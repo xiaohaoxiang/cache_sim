@@ -24,4 +24,6 @@ class cache
     const int tag_bits;
 };
 
+std::ostream &operator<<(std::ostream &os, const cache &che);
+
 #endif // !CACHE_H

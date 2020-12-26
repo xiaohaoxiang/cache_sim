@@ -1,8 +1,10 @@
 #include "cache.h"
+#include <cmath>
 #include <cstdlib>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 using addr_type = row_base::addr_type;
@@ -27,14 +29,11 @@ int main(int argc, char const *argv[])
 
     cout << std::right << std::dec << std::noboolalpha
          << "===== Simulator configuration =====\n"
-            "L1_BLOCKSIZE:         "
-         << std::setw(13) << L1_block_size << '\n'
-         << "L1_SIZE:              " << std::setw(13) << L1_size << '\n'
-         << "L1_ASSOC:             " << std::setw(13) << L1_assoc << '\n'
-         << "L1_REPLACEMENT_POLICY:" << std::setw(13) << L1_replacement_policy << '\n'
-         << "L1_WRITE_POLICY:      " << std::setw(13) << L1_write_policy << '\n'
-         << "trace_file:           " << std::setw(13) << trace_file << '\n'
-         << "===================================\n\n"
+            "L1_BLOCKSIZE:"
+         << std::setw(22) << L1_block_size << "\nL1_SIZE:" << std::setw(27) << L1_size << "\nL1_ASSOC:" << std::setw(26)
+         << L1_assoc << "\nL1_REPLACEMENT_POLICY:" << std::setw(13) << L1_replacement_policy
+         << "\nL1_WRITE_POLICY:" << std::setw(19) << L1_write_policy << "\ntrace_file:" << std::setw(24) << trace_file
+         << "\n===================================\n\n"
             "===== L1 contents =====\n";
 
     std::string tce;
@@ -74,6 +73,43 @@ int main(int argc, char const *argv[])
             }
         }
     }
+
+    auto ndec = [](double x, int n) {
+        std::ostringstream oss;
+        x += 0.5 * std::pow(10.0, -n);
+        long a = long(std::floor(x));
+        oss << a << '.';
+        while (n--)
+        {
+            x = (x - a) * 10.0;
+            a = long(std::floor(x));
+            oss << a;
+        }
+        return oss.str();
+    };
+
+    cout << che << '\n'
+         << std::right << std::dec << std::noboolalpha
+         << "====== Simulation results (raw) ======"
+            "\na. number of L1 reads:"
+         << std::setw(16) << read_count << "\nb. number of L1 read misses:" << std::setw(10) << read_miss
+         << "\nc. number of L1 writes:" << std::setw(15) << write_count
+         << "\nd. number of L1 write misses:" << std::setw(9) << write_miss << "\ne. L1 miss rate:" << std::setw(22)
+         << ndec(double(read_miss + write_miss) / double(read_count + write_count), 4)
+         << "\nf. number of writebacks from L1:" << std::setw(6) << wb_count
+         << "\ng. total memory traffic:" << std::setw(14)
+         << (L1_write_policy ? read_miss + write_count : read_miss + write_miss + wb_count)
+         << "\n\n==== Simulation results (performance) ===="
+            "\n1. average access time:"
+         << std::setw(15)
+         << ndec(
+                [&]() {
+                    double hit = 0.25 + 2.5 * (L1_size / (512.0 * 1024.0)) + 0.025 * (L1_block_size / 16.0 + L1_assoc);
+                    double miss_penalty = 20.0 + 0.5 * (L1_block_size / 16);
+                    return hit + miss_penalty * (double(read_miss + write_miss) / double(read_count + write_count));
+                }(),
+                4)
+         << " ns" << endl;
 
     return 0;
 }

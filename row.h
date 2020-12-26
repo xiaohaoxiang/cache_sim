@@ -10,6 +10,11 @@ class row : virtual public replacement_policy, virtual public write_policy
   public:
     using replacement_type = replacement_policy;
     using write_type = write_policy;
+    using base_type = row_base;
+    using addr_type = base_type::addr_type;
+
+  public:
+    row(addr_type assoc);
 };
 
 /*
@@ -18,4 +23,4 @@ class row : virtual public replacement_policy, virtual public write_policy
  */
 std::unique_ptr<row_base> make_row(row_base::addr_type assoc, bool replacement_policy, bool write_policy);
 
-#endif //! ROW_H
+#endif // !ROW_H

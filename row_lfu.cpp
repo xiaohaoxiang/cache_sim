@@ -10,7 +10,7 @@ bool lfu_comp::operator()(addr_type a, addr_type b) const
     return ra < rb || ra == rb && a < b;
 }
 
-row_lfu::row_lfu(addr_type assoc) : row_base(assoc), rank(assoc)
+row_lfu::row_lfu(addr_type assoc) : row_base(assoc), rank(assoc), comp(*this), q(comp)
 {
     for (addr_type i = 0; i < assoc; i++)
     {
@@ -30,9 +30,10 @@ row_lfu::addr_type row_lfu::replace()
 
 void row_lfu::update(addr_type index)
 {
-    q.erase(index);
-    rank[index]++;
-    q.insert(index);
+    addr_type d=pgmap[index];
+    q.erase(d);
+    rank[d]++;
+    q.insert(d);
 }
 
 bool row_lfu::replacement_policy() const

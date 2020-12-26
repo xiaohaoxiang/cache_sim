@@ -10,6 +10,8 @@ class row_lru : virtual public row_base
   public:
     row_lru(addr_type assoc);
     addr_type replace();
+
+  protected:
     void update(addr_type index);
     bool replacement_policy() const;
 

@@ -6,6 +6,25 @@ row_wtna::row_wtna(addr_type assoc) : row_base(assoc)
 {
 }
 
+row_wtna::result_t row_wtna::mem_read(addr_type index)
+{
+    const auto it = pgmap.find(index);
+    result_t r{};
+    if (it == pgmap.end())
+    {
+        const addr_type d = replace();
+        pgmap.erase(row[d]);
+        row[d] = index;
+        pgmap[index] = d;
+        r.bf.miss = true;
+    }
+    else
+    {
+        update(index);
+    }
+    return r;
+}
+
 row_wtna::result_t row_wtna::mem_write(addr_type index)
 {
     const auto it = pgmap.find(index);
@@ -14,7 +33,10 @@ row_wtna::result_t row_wtna::mem_write(addr_type index)
     {
         r.bf.miss = true;
     }
-    r.bf.wb = true;
+    else
+    {
+        update(index);
+    }
     return r;
 }
 

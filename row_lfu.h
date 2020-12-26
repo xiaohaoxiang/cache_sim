@@ -26,11 +26,14 @@ class row_lfu : virtual public row_base
   public:
     row_lfu(addr_type assoc);
     addr_type replace();
+
+  protected:
     void update(addr_type index);
     bool replacement_policy() const;
 
   private:
     std::vector<std::size_t> rank;
+    lfu_comp comp;
     std::set<addr_type, lfu_comp> q;
 
     friend class lfu_comp;

@@ -35,3 +35,9 @@ void cache::output(std::ostream &os) const
     }
     os.setf(fmt);
 }
+
+std::ostream &operator<<(std::ostream &os, const cache &che)
+{
+    che.output(os);
+    return os;
+}

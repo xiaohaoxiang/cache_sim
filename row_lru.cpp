@@ -11,16 +11,17 @@ row_lru::row_lru(addr_type assoc) : row_base(assoc), itmap(assoc)
 
 row_lru::addr_type row_lru::replace()
 {
-    const addr_type r = q.front();
+    const addr_type d = q.front();
     q.pop_front();
-    return r;
+    itmap[d] = q.insert(q.end(), d);
+    return d;
 }
 
 void row_lru::update(addr_type index)
 {
-    q.erase(itmap[index]);
-    q.push_back(index);
-    itmap[index] = std::prev(q.end());
+    const addr_type d = pgmap[index];
+    q.erase(itmap[d]);
+    itmap[d] = q.insert(q.end(), d);
 }
 
 bool row_lru::replacement_policy() const
