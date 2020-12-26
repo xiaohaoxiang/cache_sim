@@ -9,7 +9,7 @@ class row_lru : virtual public row_base
 {
   public:
     row_lru(addr_type assoc);
-    addr_type [[nodiscard]] replace();
+    addr_type replace();
     void update(addr_type index);
     bool replacement_policy() const;
 

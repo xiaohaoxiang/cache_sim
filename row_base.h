@@ -26,9 +26,9 @@ class row_base
     addr_type assoc() const;
     result_t mem_read(addr_type index);
     virtual result_t mem_write(addr_type index) = 0;
-    virtual addr_type [[nodiscard]] replace() = 0;
+    virtual addr_type replace() = 0;
     virtual void update(addr_type index) = 0;
-    virtual void print(std::ostream &os) const = 0;
+    virtual void output(std::ostream &os) const = 0;
     virtual bool replacement_policy() const = 0;
     virtual bool write_policy() const = 0;
 

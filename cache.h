@@ -2,6 +2,7 @@
 #define CACHE_H
 
 #include "row.h"
+#include <iosfwd>
 #include <memory>
 #include <vector>
 
@@ -15,6 +16,7 @@ class cache
     cache(addr_type cache_size, addr_type block_size, addr_type assoc, bool replacement_policy, bool write_policy);
     result_t mem_read(addr_type addr);
     result_t mem_write(addr_type addr);
+    void output(std::ostream &os) const;
 
   private:
     std::vector<std::unique_ptr<row_base>> che;

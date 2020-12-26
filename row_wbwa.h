@@ -10,7 +10,7 @@ class row_wbwa : virtual public row_base
   public:
     row_wbwa(addr_type assoc);
     result_t mem_write(addr_type index);
-    void print(std::ostream &os) const;
+    void output(std::ostream &os) const;
     bool write_policy() const;
 
   private:

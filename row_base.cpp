@@ -25,6 +25,6 @@ row_base::result_t row_base::mem_read(addr_type index)
 
 std::ostream &operator<<(std::ostream &os, const row_base &r)
 {
-    r.print(os);
+    r.output(os);
     return os;
 }

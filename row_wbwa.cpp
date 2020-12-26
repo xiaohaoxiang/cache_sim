@@ -25,10 +25,10 @@ row_wbwa::result_t row_wbwa::mem_write(addr_type index)
     return r;
 }
 
-void row_wbwa::print(std::ostream &os) const
+void row_wbwa::output(std::ostream &os) const
 {
     auto fmt = os.flags();
-    os << std::hex << std::right << std::noshowbase;
+    os << std::hex << std::right << std::noshowbase << std::nouppercase;
     for (addr_type i = 0; i < dirty.size(); i++)
     {
         os << std::setw(sizeof(addr_type) * 2 + 2) << row[i] << (dirty[i] ? 'D' : ' ') << ' ';

@@ -18,10 +18,10 @@ row_wtna::result_t row_wtna::mem_write(addr_type index)
     return r;
 }
 
-void row_wtna::print(std::ostream &os) const
+void row_wtna::output(std::ostream &os) const
 {
     auto fmt = os.flags();
-    os << std::hex << std::right << std::noshowbase;
+    os << std::hex << std::right << std::noshowbase << std::nouppercase;
     for (const auto &t : row)
     {
         os << std::setw(sizeof(addr_type) * 2 + 2) << t;
