@@ -1,13 +1,15 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
+#include <limits>
+
 /*
- * find n that (1 << n) == lowbit(x)
+ * find the position of the lowest 1 of x
  */
-template <typename T> int log2_lowbit(T x)
+template <typename T> int lowbit(T x)
 {
     T lowbit = x & -x;
-    int lb = 0, rb = sizeof(T) * 8;
+    int lb = -1, rb = std::numeric_limits<T>::digits;
     while (lb + 1 < rb)
     {
         int mid = (lb + rb) >> 1;

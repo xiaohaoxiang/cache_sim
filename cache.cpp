@@ -4,8 +4,8 @@
 #include <ostream>
 
 cache::cache(addr_type cache_size, addr_type block_size, addr_type assoc, bool replacement_policy, bool write_policy)
-    : che(cache_size / (block_size * assoc)), index_bits(log2_lowbit(block_size)),
-      tag_bits(index_bits + log2_lowbit(addr_type(che.size())))
+    : che(cache_size / (block_size * assoc)), index_bits(lowbit(block_size)),
+      tag_bits(index_bits + lowbit(addr_type(che.size())))
 {
     for (auto &p : che)
     {
