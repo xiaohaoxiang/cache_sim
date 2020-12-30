@@ -15,22 +15,22 @@ std::unique_ptr<row_base> make_row(row_base::addr_type assoc, bool replacement_p
     if (replacement_policy)
     {
         if (write_policy)
-        {
+        { // LFU WTNA
             return std::make_unique<row<row_lfu, row_wtna>>(assoc);
         }
         else
-        {
+        { // LFU WBWA
             return std::make_unique<row<row_lfu, row_wbwa>>(assoc);
         }
     }
     else
     {
         if (write_policy)
-        {
+        { // LRU WTNA
             return std::make_unique<row<row_lru, row_wtna>>(assoc);
         }
         else
-        {
+        { // LRU WBWA
             return std::make_unique<row<row_lru, row_wbwa>>(assoc);
         }
     }
